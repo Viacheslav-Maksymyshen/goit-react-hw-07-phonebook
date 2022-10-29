@@ -1,19 +1,20 @@
 import styles from './ContactList.module.css';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  toDelete,
-  getContacts,
-  getFilter,
-} from '../../redux/mySlice/myPhoneBookSlice';
+import { fetchContacts, deleteContact } from '../../redux/contaktsOperation';
+import { getContacts } from '../../redux/mySlice/myPhoneBookSlice';
 
 function ContactList() {
   const dispatch = useDispatch();
 
-  const contacts = useSelector(getContacts);
-  const filter = useSelector(getFilter);
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
-  const deleteContact = contactId => {
-    dispatch(toDelete(contactId));
+  const { contacts, filter } = useSelector(getContacts);
+
+  const onDeleteContactClick = contactId => {
+    dispatch(deleteContact(contactId));
   };
 
   const getVisibleContacts = () => {
@@ -32,7 +33,7 @@ function ContactList() {
           &#160;&#160;&#128512;&#160;{name}&#160;-&#160;&#9743; {number}
           <button
             className={styles.btnContact}
-            onClick={() => deleteContact(id)}
+            onClick={() => onDeleteContactClick(id)}
           >
             Delete
           </button>

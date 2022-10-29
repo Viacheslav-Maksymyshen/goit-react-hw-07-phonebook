@@ -1,10 +1,10 @@
 import styles from './Filter.module.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { toFilter, getFilter } from '../../redux/mySlice/myPhoneBookSlice';
+import { toFilter, getContacts } from '../../redux/mySlice/myPhoneBookSlice';
 
 function Filter() {
   const dispatch = useDispatch();
-  const filter = useSelector(getFilter);
+  const { filter } = useSelector(getContacts);
 
   const handleNameChange = e => {
     dispatch(toFilter(e.target.value.trim()));

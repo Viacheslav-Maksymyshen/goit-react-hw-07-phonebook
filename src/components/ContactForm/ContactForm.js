@@ -2,15 +2,16 @@ import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import styles from './ContactForm.module.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { toAdd, getContacts } from '../../redux/mySlice/myPhoneBookSlice';
+import { getContacts } from '../../redux/mySlice/myPhoneBookSlice';
+import { addContact } from '../../redux/contaktsOperation';
+import Preloader from 'components/Loader';
 
 export default function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
   const dispatch = useDispatch();
-
-  const contacts = useSelector(getContacts);
+  const { contacts, isLoading } = useSelector(getContacts);
 
   const repeatName = newName => {
     return contacts.find(
@@ -25,7 +26,7 @@ export default function ContactForm() {
         name,
         number,
       };
-      dispatch(toAdd(contact));
+      dispatch(addContact(contact));
     } else {
       alert(`${name} is already in contacts`);
     }
@@ -86,9 +87,13 @@ export default function ContactForm() {
           required
         />
       </label>
-      <button className={styles.btnForm} type="submit">
-        Add contact
-      </button>
+      {isLoading ? (
+        <Preloader />
+      ) : (
+        <button className={styles.btnForm} type="submit">
+          Add contact
+        </button>
+      )}
     </form>
   );
 }
