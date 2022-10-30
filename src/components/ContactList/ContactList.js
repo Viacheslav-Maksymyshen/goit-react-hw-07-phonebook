@@ -11,7 +11,7 @@ function ContactList() {
     dispatch(fetchContacts());
   }, [dispatch]);
 
-  const { contacts, filter, isLoading, error } = useSelector(getContacts);
+  const { contacts, filter, error } = useSelector(getContacts);
 
   const onDeleteContactClick = contactId => {
     dispatch(deleteContact(contactId));
@@ -28,7 +28,6 @@ function ContactList() {
 
   return (
     <ul className={styles.contactsList}>
-      {isLoading && <div>Loading...</div>}
       {error && <div>Something went wrong, please, try again</div>}
       {visibleContacts?.map(({ id, name, number }) => (
         <li key={id} className={styles.contactItem}>
